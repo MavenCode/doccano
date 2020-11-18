@@ -22,6 +22,12 @@ echo "Initializing database"
 "${venv}/bin/python" "${app}/manage.py" migrate
 "${venv}/bin/python" "${app}/manage.py" create_roles
 
+echo '+++++++++++++++++++++++++++++++++++++++'
+echo "ADMIN_USERNAME: ${ADMIN_USERNAME}"
+echo "ADMIN_PASSWORD: ${ADMIN_PASSWORD}"
+echo "ADMIN_EMAIL: ${ADMIN_EMAIL}"
+echo '+++++++++++++++++++++++++++++++++++++++'
+
 if [[ -n "${ADMIN_USERNAME}" ]] && [[ -n "${ADMIN_PASSWORD}" ]] && [[ -n "${ADMIN_EMAIL}" ]]; then
   "${venv}/bin/python" "${app}/manage.py" create_admin \
     --username "${ADMIN_USERNAME}" \
