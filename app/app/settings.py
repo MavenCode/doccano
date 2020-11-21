@@ -41,6 +41,7 @@ ALLOW_SIGNUP = env.bool('ALLOW_SIGNUP', True)
 ALLOWED_HOSTS = [
     "0.0.0.0",
     "127.0.0.1",
+    "mavencode-doccano-3ytnyyuazq-uc.a.run.app",
 ]
 
 
