@@ -3,6 +3,7 @@
 # run: docker run -it gcr.io/mlops-kubeflow-00/mavencode-doccano:master
 # push: docker push gcr.io/mlops-kubeflow-00/mavencode-doccano:master
 
+
 ARG PYTHON_VERSION="3.6"
 FROM python:${PYTHON_VERSION}-stretch AS builder
 
