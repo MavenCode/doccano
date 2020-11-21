@@ -299,11 +299,12 @@ DATABASE_NAME = 'doccano-dev'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env("DB_NAME"),
-        'USER': env("DB_USER"),
-        'PASSWORD': env("DB_PASSWORD"),
-        'HOST':  env("DB_HOST"),
-        'PORT': env("DB_PORT"),
+        'NAME': DATABASE_NAME,
+        'USER': 'admin',
+        'PASSWORD': 'admin',
+        'HOST': '127.0.0.1', #'35.186.43.239',
+        'PORT': '5432',
+        # 'OPTIONS': {'sslmode': 'disable'},
     }
 }
 
