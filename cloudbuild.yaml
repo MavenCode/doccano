@@ -44,6 +44,8 @@ steps:
     - mavencode-doccano
     - --image
     - gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}
+    - --port
+    - 8080
     - --region
     - us-central1
     - --memory

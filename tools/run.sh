@@ -10,7 +10,7 @@ export PSQL_CLOUD_INSTANCE="mlops-kubeflow-00:us-central2:sql-mlops-kubeflow-00-
 
 export GOOGLE_APPLICATION_CREDENTIALS="./doccano-ai.key.json"
 chmod +x /doccano/cloud_sql_proxy
-mkdir /doccano/cloudsql_dir
+mkdir /doccano/cloudsql_dir || true
 ./cloud_sql_proxy -dir=/doccano/cloud_sql_proxy --instances=$PSQL_CLOUD_INSTANCE=tcp:5432 --credential_file=$GOOGLE_APPLICATION_CREDENTIALS &
 
 #export ADMIN_USERNAME="mavencode"
@@ -36,4 +36,4 @@ if [[ -n "${ADMIN_USERNAME}" ]] && [[ -n "${ADMIN_PASSWORD}" ]] && [[ -n "${ADMI
 fi
 
 echo "Starting django"
-gunicorn --bind="0.0.0.0:${PORT:-8000}" --workers="${WORKERS:-1}" --pythonpath=app app.wsgi --timeout 300
+gunicorn --bind="0.0.0.0:${PORT:-8080}" --workers="${WORKERS:-1}" --pythonpath=app app.wsgi --timeout 300
