@@ -6,28 +6,31 @@ steps:
     - gs://doccano-dev/sa/doccano-ai.key.json
     - .
 
-#- id: docker-build
-#- name: gcr.io/cloud-builders/docker
-#  args:
-#    - build
-#    - --tag=gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}
-#    - .
-#  wait_for:
-#    - download-serviceaccount
-#
-#- name: gcr.io/cloud-builders/docker
-#  args: ["push", "gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}"]
-
-- id: docker-packaging
-  name: gcr.io/kaniko-project/executor:v0.20.0
+- id: docker-build
+- name: gcr.io/cloud-builders/docker
   args:
-    - --dockerfile=Dockerfile
-    - --destination=gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}
-    - --cache=true
-    - --cache-ttl=2h
-    - --cache-dir=
+    - build
+    - --tag=gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}
+    - .
   wait_for:
     - download-serviceaccount
+
+- name: gcr.io/cloud-builders/docker
+  id: docker-packaging
+  args: ["push", "gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}"]
+  waitFor:
+    - docker-build
+
+#- id: docker-packaging
+#  name: gcr.io/kaniko-project/executor:v0.20.0
+#  args:
+#    - --dockerfile=Dockerfile
+#    - --destination=gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}
+#    - --cache=true
+#    - --cache-ttl=2h
+#    - --cache-dir=
+#  wait_for:
+#    - download-serviceaccount
 
 
 - id: deploy-runner
