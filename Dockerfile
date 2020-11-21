@@ -1,3 +1,8 @@
+
+# build: docker build -t gcr.io/mlops-kubeflow-00/mavencode-doccano:master -f Dockerfile .
+# run: docker run -it gcr.io/mlops-kubeflow-00/mavencode-doccano:master
+# push: docker push gcr.io/mlops-kubeflow-00/mavencode-doccano:master
+
 ARG PYTHON_VERSION="3.6"
 FROM python:${PYTHON_VERSION}-stretch AS builder
 
@@ -13,8 +18,8 @@ ARG HADOLINT_VERSION=v1.17.1
 RUN curl -fsSL "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-$(uname -m)" -o /usr/local/bin/hadolint  \
   && chmod +x /usr/local/bin/hadolint
 
-COPY tools/install-mssql.sh /doccano/tools/install-mssql.sh
-RUN /doccano/tools/install-mssql.sh --dev
+#COPY tools/install-mssql.sh /doccano/tools/install-mssql.sh
+#RUN /doccano/tools/install-mssql.sh --dev
 
 COPY app/server/static/package*.json /doccano/app/server/static/
 WORKDIR /doccano/app/server/static
@@ -28,6 +33,9 @@ COPY Dockerfile /
 RUN hadolint /Dockerfile
 
 COPY . /doccano
+COPY ./cloud_sql_proxy /doccano/cloud_sql_proxy
+COPY ./doccano-ai.key.json /doccano/doccano-ai.key.json
+
 
 WORKDIR /doccano
 RUN tools/ci.sh
@@ -43,8 +51,8 @@ RUN python app/manage.py collectstatic --noinput
 
 FROM python:${PYTHON_VERSION}-slim-stretch AS runtime
 
-COPY --from=builder /doccano/tools/install-mssql.sh /doccano/tools/install-mssql.sh
-RUN /doccano/tools/install-mssql.sh
+#COPY --from=builder /doccano/tools/install-mssql.sh /doccano/tools/install-mssql.sh
+#RUN /doccano/tools/install-mssql.sh
 
 RUN useradd -ms /bin/sh doccano
 
@@ -57,16 +65,19 @@ RUN pip install --no-cache-dir /deps/*.whl
 
 COPY --from=cleaner --chown=doccano:doccano /doccano /doccano
 
-VOLUME /data
-ENV DATABASE_URL="sqlite:////data/doccano.db"
+#VOLUME /data
+#ENV DATABASE_URL="sqlite:////data/doccano.db"
 
 ENV DEBUG="True"
-ENV SECRET_KEY="change-me-in-production"
+ENV SECRET_KEY="mavencode-dev-doccano-01"
 ENV PORT="8000"
 ENV WORKERS="2"
 ENV GOOGLE_TRACKING_ID=""
-ENV AZURE_APPINSIGHTS_IKEY=""
-
+#ENV AZURE_APPINSIGHTS_IKEY="
+ENV ADMIN_USERNAME="mavencode"
+ENV ADMIN_PASSWORD="doccano"
+ENV ADMIN_EMAIL="doccano@mavencode.com"
+#
 USER doccano
 WORKDIR /doccano
 EXPOSE ${PORT}

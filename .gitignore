@@ -201,3 +201,6 @@ bundle/
 webpack-stats.json
 
 .vscode
+
+*.key.json
+.terraform

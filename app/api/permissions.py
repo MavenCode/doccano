@@ -9,7 +9,7 @@ from .models import Project, Role, RoleMapping
 
 class ProjectMixin:
     @classmethod
-    def get_project_id(self, request, view):
+    def get_project_id(cls, request, view):
         return view.kwargs.get('project_id') or request.query_params.get('project_id')
 
 

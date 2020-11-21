@@ -1,7 +1,53 @@
 steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=gcr.io/${PROJECT_ID}/almeta-doccano:${BRANCH_NAME}', '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ["push", "gcr.io/${PROJECT_ID}/almeta-doccano:${BRANCH_NAME}"]
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['beta', 'run', 'deploy', 'almeta-doccano', '--image', 'gcr.io/${PROJECT_ID}/almeta-doccano:${BRANCH_NAME}', '--region', 'us-central1', '--memory', '2G', '--platform', 'managed', '--allow-unauthenticated', '--set-env-vars', 'ADMIN_USERNAME=admin', '--set-env-vars', 'ADMIN_EMAIL=doccano@mavencode.com', '--set-env-vars', 'ADMIN_PASSWORD=password']
+- id: download-serviceaccount
+  name:  gcr.io/cloud-builders/gsutil
+  args:
+    - cp
+    - gs://doccano-dev/sa/doccano-ai.key.json
+    - .
+
+#- id: docker-build
+#- name: gcr.io/cloud-builders/docker
+#  args:
+#    - build
+#    - --tag=gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}
+#    - .
+#  wait_for:
+#    - download-serviceaccount
+#
+#- name: gcr.io/cloud-builders/docker
+#  args: ["push", "gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}"]
+
+  - id: docker-packaging
+    name: gcr.io/kaniko-project/executor:v0.20.0
+    args:
+      - --dockerfile=Dockerfile
+      - --destination=gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}
+      - --cache=true
+      - --cache-ttl=2h
+      - --cache-dir=
+    wait_for:
+      - download-serviceaccount
+
+
+- name: gcr.io/cloud-builders/gcloud
+  args:
+    - beta
+    - run
+    - deploy
+    - mavencode-doccano
+    - --image
+    - gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}
+    - --region
+    - us-central2
+    - --memory
+    - 1028Mi
+    - --platform
+    - managed
+    - --allow-unauthenticated
+    - --set-env-vars
+    - ADMIN_USERNAME=admin
+    - --set-env-vars
+    - ADMIN_EMAIL=doccano@mavencode.com
+    - --set-env-vars
+    - ADMIN_PASSWORD=password

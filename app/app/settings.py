@@ -38,7 +38,10 @@ DEBUG = env.bool('DEBUG', True)
 # True if you want to allow users to be able to create an account
 ALLOW_SIGNUP = env.bool('ALLOW_SIGNUP', True)
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "0.0.0.0",
+    "127.0.0.1",
+]
 
 
 # Application definition
@@ -282,30 +285,43 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/projects/'
 LOGOUT_REDIRECT_URL = '/'
 
-django_heroku.settings(locals(), test_runner=False)
+# django_heroku.settings(locals(), test_runner=False)
 
 # Change 'default' database configuration with $DATABASE_URL.
-DATABASES['default'].update(dj_database_url.config(
-    env='DATABASE_URL',
-    conn_max_age=env.int('DATABASE_CONN_MAX_AGE', 500),
-    ssl_require='sslmode' not in furl(env('DATABASE_URL', '')).args,
-))
+# DATABASES['default'].update(dj_database_url.config(
+#     env='DATABASE_URL',
+#     conn_max_age=env.int('DATABASE_CONN_MAX_AGE', 500),
+#     ssl_require='sslmode' not in furl(env('DATABASE_URL', '')).args,
+# ))
 
-# work-around for dj-database-url: explicitly disable ssl for sqlite
-if DATABASES['default'].get('ENGINE') == 'django.db.backends.sqlite3':
-    DATABASES['default'].get('OPTIONS', {}).pop('sslmode', None)
+DATABASE_NAME = 'doccano-dev'
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': DATABASE_NAME,
+        'USER': 'admin',
+        'PASSWORD': 'admin',
+        'HOST':  '35.186.43.239',
+        'PORT': '5432',
+        # 'OPTIONS': {'sslmode': 'disable'},
+    }
+}
 
-# work-around for dj-database-url: patch ssl for mysql
-if DATABASES['default'].get('ENGINE') == 'django.db.backends.mysql':
-    DATABASES['default'].get('OPTIONS', {}).pop('sslmode', None)
-    if env('MYSQL_SSL_CA', None):
-        DATABASES['default'].setdefault('OPTIONS', {})\
-            .setdefault('ssl', {}).setdefault('ca', env('MYSQL_SSL_CA', None))
-
-# default to a sensible modern driver for Azure SQL
-if DATABASES['default'].get('ENGINE') == 'sql_server.pyodbc':
-    DATABASES['default'].setdefault('OPTIONS', {})\
-        .setdefault('driver', 'ODBC Driver 17 for SQL Server')
+# # work-around for dj-database-url: explicitly disable ssl for sqlite
+# if DATABASES['default'].get('ENGINE') == 'django.db.backends.sqlite3':
+#     DATABASES['default'].get('OPTIONS', {}).pop('sslmode', None)
+#
+# # work-around for dj-database-url: patch ssl for mysql
+# if DATABASES['default'].get('ENGINE') == 'django.db.backends.mysql':
+#     DATABASES['default'].get('OPTIONS', {}).pop('sslmode', None)
+#     if env('MYSQL_SSL_CA', None):
+#         DATABASES['default'].setdefault('OPTIONS', {})\
+#             .setdefault('ssl', {}).setdefault('ca', env('MYSQL_SSL_CA', None))
+#
+# # default to a sensible modern driver for Azure SQL
+# if DATABASES['default'].get('ENGINE') == 'sql_server.pyodbc':
+#     DATABASES['default'].setdefault('OPTIONS', {})\
+#         .setdefault('driver', 'ODBC Driver 17 for SQL Server')
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -6,6 +6,8 @@
 !.flake8
 !requirements.txt
 !Dockerfile
+!cloud_sql_proxy
+!doccano-ai.key.json
 
 app/**/bundle/
 app/**/node_modules/
