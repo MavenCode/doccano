@@ -74,9 +74,9 @@ ENV PORT="8000"
 ENV WORKERS="2"
 ENV GOOGLE_TRACKING_ID=""
 #ENV AZURE_APPINSIGHTS_IKEY="
-ENV ADMIN_USERNAME="mavencode"
-ENV ADMIN_PASSWORD="doccano"
-ENV ADMIN_EMAIL="doccano@mavencode.com"
+#ENV ADMIN_USERNAME="mavencode"
+#ENV ADMIN_PASSWORD="doccano"
+#ENV ADMIN_EMAIL="doccano@mavencode.com"
 #
 USER doccano
 WORKDIR /doccano

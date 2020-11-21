@@ -18,19 +18,20 @@ steps:
 #- name: gcr.io/cloud-builders/docker
 #  args: ["push", "gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}"]
 
-  - id: docker-packaging
-    name: gcr.io/kaniko-project/executor:v0.20.0
-    args:
-      - --dockerfile=Dockerfile
-      - --destination=gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}
-      - --cache=true
-      - --cache-ttl=2h
-      - --cache-dir=
-    wait_for:
-      - download-serviceaccount
+- id: docker-packaging
+  name: gcr.io/kaniko-project/executor:v0.20.0
+  args:
+    - --dockerfile=Dockerfile
+    - --destination=gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}
+    - --cache=true
+    - --cache-ttl=2h
+    - --cache-dir=
+  wait_for:
+    - download-serviceaccount
 
 
-- name: gcr.io/cloud-builders/gcloud
+- id: deploy-runner
+  name: gcr.io/cloud-builders/gcloud
   args:
     - beta
     - run
@@ -46,8 +47,10 @@ steps:
     - managed
     - --allow-unauthenticated
     - --set-env-vars
-    - ADMIN_USERNAME=admin
+    - ADMIN_USERNAME=mavencode
     - --set-env-vars
     - ADMIN_EMAIL=doccano@mavencode.com
     - --set-env-vars
-    - ADMIN_PASSWORD=password
+    - ADMIN_PASSWORD=doccano
+  wait_for:
+    - docker-packaging
