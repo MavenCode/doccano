@@ -14,7 +14,7 @@ mkdir ./cloudsql_dir
 
 flake8
 python app/manage.py migrate
-coverage run --source=app app/manage.py test server.tests api.tests authentification.tests
-coverage report
+#coverage run --source=app app/manage.py test server.tests api.tests authentification.tests
+#coverage report
 
 (cd app/server/static && npm run lint)
