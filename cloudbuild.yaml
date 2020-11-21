@@ -45,7 +45,7 @@ steps:
     - --image
     - gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}
     - --region
-    - us-central2
+    - us-central1
     - --memory
     - 1028Mi
     - --platform
