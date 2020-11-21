@@ -68,3 +68,6 @@ steps:
     - DB_PORT=5432
   wait_for:
     - docker-packaging
+
+options:
+  machineType: 'N1_HIGHCPU_64'
