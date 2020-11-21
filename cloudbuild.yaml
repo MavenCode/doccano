@@ -7,7 +7,7 @@ steps:
     - .
 
 - id: docker-build
-- name: gcr.io/cloud-builders/docker
+  name: gcr.io/cloud-builders/docker
   args:
     - build
     - --tag=gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}
@@ -15,8 +15,8 @@ steps:
   wait_for:
     - download-serviceaccount
 
-- name: gcr.io/cloud-builders/docker
-  id: docker-packaging
+- id: docker-packaging
+  name: gcr.io/cloud-builders/docker
   args: ["push", "gcr.io/${PROJECT_ID}/mavencode-doccano:${BRANCH_NAME}"]
   waitFor:
     - docker-build
