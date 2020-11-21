@@ -50,7 +50,6 @@ WORKDIR /doccano
 RUN python app/manage.py collectstatic --noinput
 
 FROM python:${PYTHON_VERSION}-slim-stretch AS runtime
-
 #COPY --from=builder /doccano/tools/install-mssql.sh /doccano/tools/install-mssql.sh
 #RUN /doccano/tools/install-mssql.sh
 

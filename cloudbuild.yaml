@@ -52,5 +52,12 @@ steps:
     - ADMIN_EMAIL=doccano@mavencode.com
     - --set-env-vars
     - ADMIN_PASSWORD=doccano
+    - --set-env-vars
+    - DB_NAME=doccano-dev
+    - DB_USER=admin
+    - DB_PASSWORD=admin
+#    - DB_HOST=35.186.43.239
+    - DB_HOST=127.0.0.1
+    - DB_PORT=5432
   wait_for:
     - docker-packaging

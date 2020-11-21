@@ -217,12 +217,12 @@ ROLE_ANNOTATION_APPROVER = env('ROLE_ANNOTATION_APPROVER', 'annotation_approver'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 # Password validation
@@ -295,15 +295,15 @@ LOGOUT_REDIRECT_URL = '/'
 # ))
 
 DATABASE_NAME = 'doccano-dev'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': DATABASE_NAME,
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST':  '35.186.43.239',
-        'PORT': '5432',
-        # 'OPTIONS': {'sslmode': 'disable'},
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST':  env("DB_HOST"),
+        'PORT': env("DB_PORT"),
     }
 }
 
