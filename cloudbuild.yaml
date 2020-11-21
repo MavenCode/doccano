@@ -57,10 +57,14 @@ steps:
     - ADMIN_PASSWORD=doccano
     - --set-env-vars
     - DB_NAME=doccano-dev
+    - --set-env-vars
     - DB_USER=admin
+    - --set-env-vars
     - DB_PASSWORD=admin
 #    - DB_HOST=35.186.43.239
+    - --set-env-vars
     - DB_HOST=127.0.0.1
+    - --set-env-vars
     - DB_PORT=5432
   wait_for:
     - docker-packaging
